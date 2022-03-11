@@ -96,7 +96,9 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
 
                 if (task.isSuccessful()) {
                     //redirect to homepage
-                    startActivity(new Intent(Login.this, HomePage.class));
+                    //startActivity(new Intent(Login.this, HomePage.class));
+                    //redirect to navi homepage
+                    startActivity(new Intent(Login.this, NavMainActivity.class));
 
                 } else{
                     Toast.makeText(Login.this, "Failed to Log In!", Toast.LENGTH_LONG).show();

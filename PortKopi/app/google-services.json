@@ -1,33 +1,41 @@
 {
   "project_info": {
-    "project_number": "1022116126818",
-    "project_id": "portkopi-trial",
-    "storage_bucket": "portkopi-trial.appspot.com"
+    "project_number": "927003094516",
+    "project_id": "portkopi-fbd40",
+    "storage_bucket": "portkopi-fbd40.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1022116126818:android:5ddd72f3f0ffa729af713b",
+        "mobilesdk_app_id": "1:927003094516:android:84e3424d098f7aa6efdda1",
         "android_client_info": {
           "package_name": "com.pk.portkopi"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1022116126818-36spkkubqdo2e352e3f0ni1o1nsp56ph.apps.googleusercontent.com",
+          "client_id": "927003094516-teu4m57dsnq8nhgdjeq6b65v0bqb82fr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.pk.portkopi",
+            "certificate_hash": "b9749a527928b6f88184d3fbb7ce806daae26a42"
+          }
+        },
+        {
+          "client_id": "927003094516-ltd0qag6nnridemi7a4p4alpnciibret.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCJH_Wpn9xjX9_YbMsN_ck57ukvMCG8AFE"
+          "current_key": "AIzaSyCtNz9ltNi2DTFdm4nOv6Q--zvwmTV-itg"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "1022116126818-36spkkubqdo2e352e3f0ni1o1nsp56ph.apps.googleusercontent.com",
+              "client_id": "927003094516-ltd0qag6nnridemi7a4p4alpnciibret.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

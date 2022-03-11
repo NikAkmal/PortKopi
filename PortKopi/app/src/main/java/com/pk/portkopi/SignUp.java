@@ -3,19 +3,25 @@ package com.pk.portkopi;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.android.material.textview.MaterialTextView;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Objects;
+import java.util.regex.Pattern;
 
 
 public class SignUp extends AppCompatActivity implements View.OnClickListener {
@@ -23,7 +29,8 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
     //Variables
     private FirebaseAuth mAuth;
 
-    TextInputLayout regName, regUsername, regEmail, regPassword;
+
+    //TextInputLayout regName, regUsername, regEmail, regPassword;
     EditText name, username, editTextEmail, editTextPassword;
 
     MaterialButton signUp;
@@ -39,21 +46,26 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
 
         // get the reference of View's
 
-        regName = (TextInputLayout) findViewById(R.id.reg_name);
-        regUsername = (TextInputLayout) findViewById(R.id.reg_username);
-        regEmail = (TextInputLayout) findViewById(R.id.reg_email);
-        regPassword = (TextInputLayout) findViewById(R.id.reg_password);
+        //regName = (TextInputLayout) findViewById(R.id.reg_name);
+        //regUsername = (TextInputLayout) findViewById(R.id.reg_username);
+        //regEmail = (TextInputLayout) findViewById(R.id.reg_email);
+        //regPassword = (TextInputLayout) findViewById(R.id.reg_password);
 
         name = (EditText) findViewById(R.id.name);
         username = (EditText) findViewById(R.id.username);
         editTextEmail = (EditText) findViewById(R.id.email);
         editTextPassword = (EditText) findViewById(R.id.password);
 
-        signUp = (MaterialButton) findViewById(R.id.signUp);
+        signUp = findViewById(R.id.signUp);
         signUp.setOnClickListener(this);
 
-        callSignIn = (MaterialTextView) findViewById(R.id.signIn);
+        callSignIn = findViewById(R.id.signIn);
         callSignIn.setOnClickListener(this);
+
+        if (mAuth.getCurrentUser() != null) {
+            startActivity(new Intent(getApplicationContext(), Login.class));
+            finish();
+        }
 
     }
 
@@ -73,16 +85,16 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
     private void signUp() {
         String email = editTextEmail.getText().toString().trim();
         String password = editTextPassword.getText().toString().trim();
-        String regName = name.getText().toString().trim();
-        String regUsername = username.getText().toString().trim();
+        String regname = name.getText().toString().trim();
+        String regusername = username.getText().toString().trim();
 
-        if(regName.isEmpty()) {
+        if(regname.isEmpty()) {
             name.setError("Full name is required");
             name.requestFocus();
             return;
         }
 
-        if(regUsername.isEmpty()) {
+        if(regusername.isEmpty()) {
             username.setError("Username is required");
             username.requestFocus();
             return;
@@ -94,6 +106,12 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
             return;
         }
 
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+            editTextEmail.setError("Email is not valid");
+            editTextEmail.requestFocus();
+            return;
+        }
+
         if(password.isEmpty()) {
             editTextPassword.setError("Password is required");
             editTextPassword.requestFocus();
@@ -101,29 +119,37 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
         }
 
         if(editTextPassword.length() < 6) {
-            editTextPassword.setError("Min password length should be 6 characters!");
+            editTextPassword.setError("Minimum password length should be 6 characters!");
             editTextPassword.requestFocus();
             return;
         }
 
-        mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(task -> {
+        mAuth.createUserWithEmailAndPassword(email,password)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()) {
+                    User user = new User(regname, regusername, email);
 
-                    if (task.isSuccessful()) {
-                        User user = new User(regName, regUsername, email, password);
+                    FirebaseDatabase.getInstance().getReference("Users")
+                            .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                            .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
 
-                        FirebaseDatabase.getInstance().getReference("Users")
-                                .child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid())
-                                .setValue(user).addOnCompleteListener(task1 -> {
-                                    if (task1.isSuccessful()) {
-                                        Toast.makeText(SignUp.this, "User has been registered successfully!", Toast.LENGTH_LONG).show();
-                                    } else {
-                                        Toast.makeText(SignUp.this, "Failed to register! Try again!", Toast.LENGTH_LONG).show();
-                                    }
-                                });
-                    } else {
-                        Toast.makeText(SignUp.this, "Failed to register! Try again!", Toast.LENGTH_LONG).show();
-                    }
-                });
+                            if (task.isSuccessful()) {
+                                Toast.makeText(SignUp.this, "Registration success", Toast.LENGTH_LONG).show();
+
+                            } else {
+                                Toast.makeText(SignUp.this, "Registration failed", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    });
+
+                } else {
+                    Toast.makeText(SignUp.this, "Registration failed", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
     }
 }
