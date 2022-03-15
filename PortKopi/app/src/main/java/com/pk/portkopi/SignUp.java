@@ -14,14 +14,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
-import com.google.android.material.textfield.TextInputLayout;
 import com.google.android.material.textview.MaterialTextView;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
-
-import java.util.Objects;
-import java.util.regex.Pattern;
+import com.pk.portkopi.Model.User;
 
 
 public class SignUp extends AppCompatActivity implements View.OnClickListener {
