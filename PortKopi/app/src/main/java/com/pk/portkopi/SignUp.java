@@ -1,6 +1,5 @@
 package com.pk.portkopi;
 
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Patterns;
@@ -19,7 +18,6 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 import com.pk.portkopi.Model.User;
-
 
 public class SignUp extends AppCompatActivity implements View.OnClickListener {
 
@@ -85,6 +83,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
         String regname = name.getText().toString().trim();
         String regusername = username.getText().toString().trim();
 
+
         if(regname.isEmpty()) {
             name.setError("Full name is required");
             name.requestFocus();
@@ -126,7 +125,9 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                    User user = new User(regname, regusername, email);
+
+                    String id = mAuth.getCurrentUser().getUid();
+                    User user = new User(regname, regusername, email, id);
 
                     FirebaseDatabase.getInstance().getReference("Users")
                             .child(FirebaseAuth.getInstance().getCurrentUser().getUid())

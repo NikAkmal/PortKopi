@@ -2,15 +2,15 @@ package com.pk.portkopi.Model;
 
 public class Post {
     private String postid;
-    private String postimage;
+    private String image;
     private String description;
-    private String publisher;
+    private String id;
 
-    public Post(String postid, String postimage, String description, String publisher) {
+    public Post(String postid, String image, String description, String id) {
         this.postid = postid;
-        this.postimage = postimage;
+        this.image = image;
         this.description = description;
-        this.publisher = publisher;
+        this.id = id;
     }
 
     public Post() {
@@ -25,11 +25,11 @@ public class Post {
     }
 
     public String getPostimage() {
-        return postimage;
+        return image;
     }
 
-    public void setPostimage(String postimage) {
-        this.postimage = postimage;
+    public void setPostimage(String image) {
+        this.image = image;
     }
 
     public String getDescription() {
@@ -41,10 +41,10 @@ public class Post {
     }
 
     public String getPublisher() {
-        return publisher;
+        return id;
     }
 
-    public void setPublisher(String publisher) {
-        this.publisher = publisher;
+    public void setPublisher(String id) {
+        this.id = id;
     }
 }

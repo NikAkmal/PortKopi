@@ -28,6 +28,8 @@ import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 import com.theartofdev.edmodo.cropper.CropImage;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashMap;
 
 public class PostActivity extends AppCompatActivity {
@@ -41,10 +43,18 @@ public class PostActivity extends AppCompatActivity {
     TextView post;
     EditText description;
 
+    Calendar calendar;
+    SimpleDateFormat simpleDateFormat;
+    String datetime;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post);
+
+        calendar = Calendar.getInstance();
+        simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        datetime = simpleDateFormat.format(calendar.getTime());
 
         close = findViewById(R.id.close);
         image_added = findViewById(R.id.image_added);
@@ -110,9 +120,10 @@ public class PostActivity extends AppCompatActivity {
 
                         HashMap<String, Object> hashMap = new HashMap<>();
                         hashMap.put("postid", postid);
-                        hashMap.put("postimage", miUrlOk);
+                        hashMap.put("datetime", datetime);
+                        hashMap.put("image", miUrlOk);
                         hashMap.put("description", description.getText().toString());
-                        hashMap.put("publisher", FirebaseAuth.getInstance().getCurrentUser().getUid());
+                        hashMap.put("id", FirebaseAuth.getInstance().getCurrentUser().getUid());
 
                         reference.child(postid).setValue(hashMap);
 
