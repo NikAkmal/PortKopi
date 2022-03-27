@@ -1,28 +1,8 @@
-//package com.pk.portkopi.Fragment;
-//
-//import android.os.Bundle;
-//import android.view.LayoutInflater;
-//import android.view.View;
-//import android.view.ViewGroup;
-//import android.widget.ProgressBar;
-//
-//import androidx.fragment.app.Fragment;
-//import androidx.recyclerview.widget.LinearLayoutManager;
-//import androidx.recyclerview.widget.RecyclerView;
-//
-//import com.google.firebase.database.DataSnapshot;
-//import com.google.firebase.database.DatabaseError;
-//import com.google.firebase.database.DatabaseReference;
-//import com.google.firebase.database.FirebaseDatabase;
-//import com.google.firebase.database.ValueEventListener;
-//import com.pk.portkopi.Adapter.PostAdapter;
-//import com.pk.portkopi.Model.Post;
-//import com.pk.portkopi.R;
-//
-//import java.util.ArrayList;
-//import java.util.List;
-//
-//public class HomeFragment extends Fragment {
+package com.pk.portkopi.Fragment;
+
+import androidx.fragment.app.Fragment;
+
+public class HomeFragment extends Fragment {
 //
 //    private RecyclerView recyclerView;
 //    private PostAdapter postAdapter;
@@ -76,4 +56,4 @@
 //            }
 //        });
 //    }
-//}
+}

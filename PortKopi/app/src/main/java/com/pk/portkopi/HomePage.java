@@ -20,7 +20,8 @@ public class HomePage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home_page);
+        setContentView(R.layout.fragment_home);
+
 
         mRecyclerView = findViewById(R.id.recycler_view);
         mRecyclerView.setHasFixedSize(true);
@@ -35,13 +36,13 @@ public class HomePage extends AppCompatActivity {
         FirebaseRecyclerAdapter<Post, ViewHolder>firebaseRecyclerAdapter =
                 new FirebaseRecyclerAdapter<Post, ViewHolder>(
                     Post.class,
-                    R.layout.image,
+                    R.layout.post_item,
                     ViewHolder.class,
                     reference
             ){
                 @Override
                 protected void populateViewHolder(ViewHolder viewHolder, Post post, int i) {
-                    viewHolder.setdetails(getApplicationContext(),Post.getDescription().Post.getPostimage());
+                    viewHolder.setdetails(getApplicationContext(),post.getDescription(),post.getImage());
                 }
             };
 
