@@ -8,12 +8,6 @@ public class User {
 
     }
 
-//    public User (String name, String username, String email){
-//        this.name = name;
-//        this.username = username;
-//        this.email = email;
-//    }
-
     public User(String regname, String regusername, String email, String id) {
         this.name = regname;
         this.username = regusername;
@@ -45,5 +39,13 @@ public class User {
     public void setUsername(String username) {
         this.username = username;
     }
+
+//    public String getImageurl() {
+//        return imageurl;
+//    }
+//
+//    public void setImageurl(String imageurl) {
+//        this.imageurl = imageurl;
+//    }
 
 }
