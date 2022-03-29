@@ -1,108 +1,150 @@
-package com.pk.portkopi.Adapter;
+package com.koddev.instagramtest.Fragments;
 
-import android.content.Context;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.ProgressBar;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.pk.portkopi.Fragment.HomeFragment;
-import com.pk.portkopi.Model.Post;
-import com.pk.portkopi.Model.User;
-import com.pk.portkopi.R;
+import com.koddev.instagramtest.Adapter.PostAdapter;
+import com.koddev.instagramtest.Adapter.StoryAdapter;
+import com.koddev.instagramtest.Model.Post;
+import com.koddev.instagramtest.Model.Story;
+import com.koddev.instagramtest.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ImageViewHolder> {
+public class HomeFragment extends Fragment {
 
-    public Context mContext;
-    public ArrayList<Post> mPosts;
+    private RecyclerView recyclerView;
+    private PostAdapter postAdapter;
+    private List<Post> postList;
 
-    private FirebaseUser firebaseUser;
+    private RecyclerView recyclerView_story;
+    private StoryAdapter storyAdapter;
+    private List<Story> storyList;
 
-    public PostAdapter(Context context, ArrayList<Post> posts){
-        this.mContext = context;
-        this.mPosts = posts;
-    }
+    private List<String> followingList;
 
-    public PostAdapter(HomeFragment homeFragment, ArrayList<Post> postList) {
-    }
-
-    @NonNull
-    @Override
-    public PostAdapter.ImageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.post_item, parent, false);
-        return new PostAdapter.ImageViewHolder(view);
-    }
+    ProgressBar progress_circular;
 
     @Override
-    public void onBindViewHolder(@NonNull PostAdapter.ImageViewHolder viewHolder, int position) {
-        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        Post post = mPosts.get(position);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-        Glide.with(mContext).load(post.getPostimage()).into(viewHolder.image);
+        recyclerView = view.findViewById(R.id.recycler_view);
+        recyclerView.setHasFixedSize(true);
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext());
+        mLayoutManager.setReverseLayout(true);
+        mLayoutManager.setStackFromEnd(true);
+        recyclerView.setLayoutManager(mLayoutManager);
+        postList = new ArrayList<>();
+        postAdapter = new PostAdapter(getContext(), postList);
+        recyclerView.setAdapter(postAdapter);
 
-        if (post.getDescription().equals("")){
-            viewHolder.description.setVisibility(View.GONE);
-        } else {
-            viewHolder.description.setVisibility(View.VISIBLE);
-            viewHolder.description.setText(post.getDescription());
-        }
+        recyclerView_story = view.findViewById(R.id.recycler_view_story);
+        recyclerView_story.setHasFixedSize(true);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(),
+                LinearLayoutManager.HORIZONTAL, false);
+        recyclerView_story.setLayoutManager(linearLayoutManager);
+        storyList = new ArrayList<>();
+        storyAdapter = new StoryAdapter(getContext(), storyList);
+        recyclerView_story.setAdapter(storyAdapter);
 
-        publisherInfo(viewHolder.username, viewHolder.publisher, post.getPublisher());
+        progress_circular = view.findViewById(R.id.progress_circular);
 
+        checkFollowing();
+
+        return view;
     }
 
-    @Override
-    public int getItemCount() {
-        return mPosts.size();
-    }
-
-    public class ImageViewHolder extends RecyclerView.ViewHolder {
-
-        public ImageView image, like, comment, more;
-        public TextView username, likes, publisher, description, comments;
-
-        public ImageViewHolder(View itemView) {
-            super(itemView);
-
-//            image_profile = itemView.findViewById(R.id.image_profile);
-            username = itemView.findViewById(R.id.username);
-            image = itemView.findViewById(R.id.image);
-            like = itemView.findViewById(R.id.like);
-            comment = itemView.findViewById(R.id.comment);
-            likes = itemView.findViewById(R.id.likes);
-            publisher = itemView.findViewById(R.id.publisher);
-            description = itemView.findViewById(R.id.description);
-            comments = itemView.findViewById(R.id.comments);
-            more = itemView.findViewById(R.id.more);
-        }
-    }
-
-    private void publisherInfo(final TextView username, final TextView publisher, final String userid){
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference()
-                .child("Users").child(userid);
+    private void checkFollowing(){
+        followingList = new ArrayList<>();
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Follow")
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .child("following");
 
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                User user = dataSnapshot.getValue(User.class);
-//                Profile Picture
-//                Glide.with(mContext).load(user.getImageurl()).into(image_profile);
-                username.setText(user.getUsername());
-                publisher.setText(user.getUsername());
+                followingList.clear();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    followingList.add(snapshot.getKey());
+                }
+
+                readPosts();
+                readStory();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void readPosts(){
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Posts");
+
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                postList.clear();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    Post post = snapshot.getValue(Post.class);
+                    for (String id : followingList){
+                        if (post.getPublisher().equals(id)){
+                            postList.add(post);
+                        }
+                    }
+                }
+
+                postAdapter.notifyDataSetChanged();
+                progress_circular.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void readStory(){
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Story");
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                long timecurrent = System.currentTimeMillis();
+                storyList.clear();
+                storyList.add(new Story("", 0, 0, "",
+                        FirebaseAuth.getInstance().getCurrentUser().getUid()));
+                for (String id : followingList) {
+                    int countStory = 0;
+                    Story story = null;
+                    for (DataSnapshot snapshot : dataSnapshot.child(id).getChildren()) {
+                        story = snapshot.getValue(Story.class);
+                        if (timecurrent > story.getTimestart() && timecurrent < story.getTimeend()) {
+                            countStory++;
+                        }
+                    }
+                    if (countStory > 0){
+                        storyList.add(story);
+                    }
+                }
+
+                storyAdapter.notifyDataSetChanged();
             }
 
             @Override
