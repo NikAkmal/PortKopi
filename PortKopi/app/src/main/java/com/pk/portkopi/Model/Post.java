@@ -1,27 +1,19 @@
 package com.pk.portkopi.Model;
 
 public class Post {
-    public String postid;
-    public String image;
-    public String description;
-    public String id;
+    private String postid;
+    private String image;
+    private String description;
+    private String id;
 
-    public Post() {}
-
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
+    public Post(String postid, String image, String description, String id) {
+        this.postid = postid;
         this.image = image;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
+        this.description = description;
         this.id = id;
+    }
+
+    public Post() {
     }
 
     public String getPostid() {
@@ -32,6 +24,14 @@ public class Post {
         this.postid = postid;
     }
 
+    public String getPostimage() {
+        return image;
+    }
+
+    public void setPostimage(String image) {
+        this.image = image;
+    }
+
     public String getDescription() {
         return description;
     }
@@ -40,4 +40,11 @@ public class Post {
         this.description = description;
     }
 
+    public String getPublisher() {
+        return id;
+    }
+
+    public void setPublisher(String id) {
+        this.id = id;
+    }
 }
