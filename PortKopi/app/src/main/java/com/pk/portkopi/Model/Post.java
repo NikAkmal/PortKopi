@@ -24,7 +24,7 @@ public class Post {
         this.postid = postid;
     }
 
-    public String getPostimage() {
+    public String getImage() {
         return image;
     }
 
@@ -40,7 +40,7 @@ public class Post {
         this.description = description;
     }
 
-    public String getPublisher() {
+    public String getId() {
         return id;
     }
 
