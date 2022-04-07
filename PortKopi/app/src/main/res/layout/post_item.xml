@@ -66,12 +66,12 @@
                 android:src="@drawable/ic_like" />
 
             <ImageView
-                android:id="@+id/comment"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:layout_marginStart="10dp"
+                android:id="@+id/comment"
+                android:src="@drawable/ic_comment"
                 android:layout_toEndOf="@id/like"
-                android:src="@drawable/ic_comment" />
+                android:layout_marginStart="10dp" />
 
         </RelativeLayout>
 
@@ -97,7 +97,6 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:text="description"
-
             android:textColor="@color/colorPrimaryDark" />
 
         <TextView

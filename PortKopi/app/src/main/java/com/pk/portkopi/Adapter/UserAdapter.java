@@ -3,6 +3,7 @@ package com.pk.portkopi.Adapter;
 import static android.content.Context.MODE_PRIVATE;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +24,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.pk.portkopi.Fragment.ProfileFragment;
 import com.pk.portkopi.Model.User;
+import com.pk.portkopi.NavMainActivity;
 import com.pk.portkopi.R;
 
 import java.util.List;
@@ -33,12 +35,15 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ImageViewHolde
 
     private Context mContext;
     private List<User> mUsers;
+    private boolean isFragment;
 
     private FirebaseUser firebaseUser;
 
-    public UserAdapter(Context context, List<User> users){
+    public UserAdapter(Context context, List<User> users, boolean isFragment){
         mContext = context;
         mUsers = users;
+        this.isFragment = isFragment;
+
     }
 
     @NonNull
@@ -69,12 +74,18 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ImageViewHolde
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (isFragment) {
                     SharedPreferences.Editor editor = mContext.getSharedPreferences("PREFS", MODE_PRIVATE).edit();
                     editor.putString("profileid", user.getId());
                     editor.apply();
 
                     ((FragmentActivity) mContext).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                             new ProfileFragment()).commit();
+                } else {
+                    Intent intent = new Intent(mContext, NavMainActivity.class);
+                    intent.putExtra("publisherid", user.getId());
+                    mContext.startActivity(intent);
+                }
             }
         });
 

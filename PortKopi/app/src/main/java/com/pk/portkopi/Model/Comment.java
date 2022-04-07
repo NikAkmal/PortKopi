@@ -22,11 +22,11 @@ public class Comment {
         this.comment = comment;
     }
 
-    public String getPublisher() {
+    public String getId() {
         return publisher;
     }
 
-    public void setPublisher(String publisher) {
+    public void setId(String publisher) {
         this.publisher = publisher;
     }
 

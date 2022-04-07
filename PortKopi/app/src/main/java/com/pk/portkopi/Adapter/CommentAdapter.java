@@ -58,14 +58,14 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ImageVie
         final Comment comment = mComment.get(position);
 
         holder.comment.setText(comment.getComment());
-        getUserInfo(holder.username, comment.getPublisher());
+        getUserInfo(holder.username, comment.getId());
 
         holder.username.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 Intent intent = new Intent(mContext, NavMainActivity.class);
-                intent.putExtra("publisherid", comment.getPublisher());
+                intent.putExtra("id", comment.getId());
                 mContext.startActivity(intent);
             }
         });
@@ -74,7 +74,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ImageVie
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(mContext, NavMainActivity.class);
-                intent.putExtra("publisherid", comment.getPublisher());
+                intent.putExtra("id", comment.getId());
                 mContext.startActivity(intent);
             }
         });
@@ -82,7 +82,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ImageVie
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                if (comment.getPublisher().equals(firebaseUser.getUid())) {
+                if (comment.getId().equals(firebaseUser.getUid())) {
 
                         AlertDialog alertDialog = new AlertDialog.Builder(mContext).create();
                         alertDialog.setTitle("Do you want to delete?");
@@ -136,9 +136,9 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ImageVie
     }
 
     //Profile Picture remove
-    private void getUserInfo(final TextView username, String publisherid){
+    private void getUserInfo(final TextView username, String id){
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference()
-                .child("Users").child(publisherid);
+                .child("Users").child(id);
 
         reference.addValueEventListener(new ValueEventListener() {
             @Override

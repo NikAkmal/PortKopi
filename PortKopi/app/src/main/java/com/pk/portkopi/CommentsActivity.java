@@ -2,19 +2,17 @@ package com.pk.portkopi;
 
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.appcompat.widget.Toolbar;
-
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -41,7 +39,7 @@ public class CommentsActivity extends AppCompatActivity {
     TextView post;
 
     String postid;
-    String publisherid;
+    String id;
 
     FirebaseUser firebaseUser;
 
@@ -63,7 +61,7 @@ public class CommentsActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         postid = intent.getStringExtra("postid");
-        publisherid = intent.getStringExtra("publisherid");
+        id = intent.getStringExtra("id");
 
         recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
@@ -103,7 +101,7 @@ public class CommentsActivity extends AppCompatActivity {
 
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("comment", addcomment.getText().toString());
-        hashMap.put("publisher", firebaseUser.getUid());
+        hashMap.put("id", firebaseUser.getUid());
         hashMap.put("commentid", commentid);
 
         reference.child(commentid).setValue(hashMap);
@@ -113,7 +111,7 @@ public class CommentsActivity extends AppCompatActivity {
     }
 
     private void addNotification(){
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Notifications").child(publisherid);
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Notifications").child(id);
 
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("userid", firebaseUser.getUid());
@@ -130,7 +128,7 @@ public class CommentsActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 User user = dataSnapshot.getValue(User.class);
-                Glide.with(getApplicationContext()).load(user.getImageurl()).into(image_profile);
+//                Glide.with(getApplicationContext()).load(user.getImageurl()).into(image_profile);
             }
 
             @Override
