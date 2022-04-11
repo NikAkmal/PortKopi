@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -64,8 +65,8 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ImageViewHolde
         isFollowing(user.getId(), holder.btn_follow);
 
         holder.username.setText(user.getUsername());
-        holder.fullname.setText(user.getName());
-//        Glide.with(mContext).load(user.getImageurl()).into(holder.image_profile);
+        holder.fullname.setText(user.getFullname());
+        Glide.with(mContext).load(user.getImageurl()).into(holder.image_profile);
 
         if (user.getId().equals(firebaseUser.getUid())){
             holder.btn_follow.setVisibility(View.GONE);

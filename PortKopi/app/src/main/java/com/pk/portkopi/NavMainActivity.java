@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 import com.pk.portkopi.Fragment.HomeFragment;
 import com.pk.portkopi.Fragment.ProfileFragment;
 import com.pk.portkopi.Fragment.SearchFragment;
@@ -58,6 +59,8 @@ public class NavMainActivity extends AppCompatActivity {
                             startActivity(new Intent(NavMainActivity.this, PostActivity.class));
                             break;
                         case R.id.nav_profile:
+                            SharedPreferences.Editor editor = getSharedPreferences("PREFS", MODE_PRIVATE).edit();
+                            editor.putString("profileid", FirebaseAuth.getInstance().getCurrentUser().getUid());
                             selectedFragment = new ProfileFragment();
                             break;
 

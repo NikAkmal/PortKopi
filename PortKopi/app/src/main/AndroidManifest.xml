@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest
-
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.pk.portkopi"
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    >
+    package="com.pk.portkopi">
 
-    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.INTERNET" /> <!-- add -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
-    <!--add-->
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-feature android:name="android.hardware.camera" android:required="true"/>
-    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
+
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:allowBackup="true"
@@ -21,6 +20,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.PortKopi">
+        <activity
+            android:name=".OptionsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".EditProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SignUpNew"
+            android:exported="false" />
+        <activity
+            android:name=".LoginNew"
+            android:exported="false" />
         <activity
             android:name=".NavMainActivity"
             android:exported="false" />
@@ -36,17 +47,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".SignUp"
-            android:exported="true" />
-        <activity
-            android:name=".Login"
-            android:exported="true" />
 
-        <!--add-->
 <!--        <activity-->
-<!--            android:name=".UploadActivity"-->
+<!--            android:name=".SignUp"-->
 <!--            android:exported="true" />-->
+<!--        <activity-->
+<!--            android:name=".Login"-->
+<!--            android:exported="true" /> -->
+
+        <!-- add -->
+        <!-- <activity -->
+        <!-- android:name=".UploadActivity" -->
+        <!-- android:exported="true" /> -->
         <activity android:name=".PostActivity" />
         <activity android:name=".CommentsActivity" />
         <activity android:name=".FollowersActivity" />

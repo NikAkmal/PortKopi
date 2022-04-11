@@ -33,6 +33,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.pk.portkopi.CommentsActivity;
 import com.pk.portkopi.FollowersActivity;
 import com.pk.portkopi.Fragment.PostDetailFragment;
@@ -160,6 +162,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ImageViewHolde
                                             @Override
                                             public void onComplete(@NonNull Task<Void> task) {
                                                 if (task.isSuccessful()){
+//                                                    Delete Image in Storage Code
+                                                    StorageReference photoDelete = FirebaseStorage.getInstance().getReferenceFromUrl(post.getImage());
+                                                    photoDelete.delete();
+                                                    Toast.makeText(mContext, "Deleted!", Toast.LENGTH_SHORT).show();
 
                                                 }
                                             }
