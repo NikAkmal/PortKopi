@@ -14,6 +14,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -58,7 +59,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ImageVie
         final Comment comment = mComment.get(position);
 
         holder.comment.setText(comment.getComment());
-        getUserInfo(holder.username, comment.getId());
+        getUserInfo(holder.image_profile, holder.username, comment.getId());
 
         holder.username.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -136,7 +137,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ImageVie
     }
 
     //Profile Picture remove
-    private void getUserInfo(final TextView username, String id){
+    private void getUserInfo(final ImageView imageView, final TextView username, String id){
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference()
                 .child("Users").child(id);
 
@@ -144,7 +145,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ImageVie
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 User user = dataSnapshot.getValue(User.class);
-//                Glide.with(mContext).load(user.getImageurl()).into(imageView);
+                Glide.with(mContext).load(user.getImageurl()).into(imageView);
                 username.setText(user.getUsername());
             }
 

@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
@@ -65,10 +66,8 @@ public class EditProfileActivity extends AppCompatActivity {
 
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         storageRef = FirebaseStorage.getInstance().getReference("uploads");
-        reference = FirebaseDatabase.getInstance().getReference("Users");
-        userID = firebaseUser.getUid();
 
-        reference.child(userID).addValueEventListener(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference().child("Users").child(firebaseUser.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 User userprofile = snapshot.getValue(User.class);
@@ -77,6 +76,7 @@ public class EditProfileActivity extends AppCompatActivity {
                 bio.setText(userprofile.getBio());
                 location.setText(userprofile.getLocation());
                 Glide.with(getApplicationContext()).load(userprofile.getImageurl()).into(image_pro);
+
             }
 
             @Override
@@ -143,12 +143,12 @@ public class EditProfileActivity extends AppCompatActivity {
     }
 
     private void uploadImage(){
-        ProgressDialog pd = new ProgressDialog(this);
+        final ProgressDialog pd = new ProgressDialog(this);
         pd.setMessage("uploading");
         pd.show();
 
         if (mImageUrl !=null){
-            StorageReference filerefencre = storageRef.child(System.currentTimeMillis()
+            final StorageReference filerefencre = storageRef.child(System.currentTimeMillis()
                     +"."+ getFileExtension(mImageUrl));
 
             uploadTask =  filerefencre.putFile(mImageUrl);
@@ -167,7 +167,7 @@ public class EditProfileActivity extends AppCompatActivity {
                         Uri downloadUri = task.getResult();
                         String myUrl = downloadUri.toString();
 
-                        DatabaseReference reference2 = FirebaseDatabase.getInstance().getReference("User").child(firebaseUser.getUid());
+                        DatabaseReference reference2 = FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.getUid());
 
                         HashMap<String,Object> hashMap = new HashMap<>();
                         hashMap.put("imageurl", ""+myUrl);
@@ -190,17 +190,18 @@ public class EditProfileActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    public void onActivityReenter(int resultCode, Intent data) {
-        super.onActivityReenter(resultCode, data);
 
-        if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK){
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK){
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             mImageUrl = result.getUri();
-
             uploadImage();
+
         } else {
             Toast.makeText(this, "Something Gone Wrong", Toast.LENGTH_SHORT).show();
         }
     }
 }
+

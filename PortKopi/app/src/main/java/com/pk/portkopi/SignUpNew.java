@@ -3,10 +3,13 @@ package com.pk.portkopi;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,6 +31,8 @@ public class SignUpNew extends AppCompatActivity {
     private EditText fullname, username, email, password;
     private TextView log_in;
     private Button sign_up;
+    private ImageView img1, img2, img3;
+    private TextView atleast6, upper, number, symbol;
 
     FirebaseAuth mAuth;
     DatabaseReference reference;
@@ -45,6 +50,14 @@ public class SignUpNew extends AppCompatActivity {
         log_in=(TextView) findViewById(R.id.btn_loginAcc);
         sign_up=(Button) findViewById(R.id.btn_signupAcc);
 
+        atleast6 = findViewById(R.id.atleast6);
+        upper = findViewById(R.id.upper);
+        number = findViewById(R.id.number);
+
+        img1 = findViewById(R.id.img1);
+        img2 = findViewById(R.id.img2);
+        img3 = findViewById(R.id.img3);
+
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
 
@@ -52,6 +65,51 @@ public class SignUpNew extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(SignUpNew.this, LoginNew.class));
+            }
+        });
+
+        password.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                // 6 characters
+                if (hasLength(charSequence)) {
+                    img1.setImageResource(R.drawable.checkbox);
+
+                } else {
+                    img1.setImageResource(R.drawable.uncheck);
+                }
+
+                // uppercase
+                if (hasUpper(charSequence)) {
+                    img2.setImageResource(R.drawable.checkbox);
+
+                } else {
+                    img2.setImageResource(R.drawable.uncheck);
+                }
+
+                // number
+                if (hasNumber(charSequence)) {
+                    img3.setImageResource(R.drawable.checkbox);
+
+                } else {
+                    img3.setImageResource(R.drawable.uncheck);
+                }
+
+                if (hasLength(charSequence) && hasUpper(charSequence) && hasNumber(charSequence) ) {
+                    sign_up.setEnabled(true);
+                } else {
+                    sign_up.setEnabled(false);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
             }
         });
 
@@ -70,13 +128,29 @@ public class SignUpNew extends AppCompatActivity {
                 if (TextUtils.isEmpty(str_email) || TextUtils.isEmpty(str_password)
                         || TextUtils.isEmpty(str_username)|| TextUtils.isEmpty(str_fullname)){
                     Toast.makeText(SignUpNew.this, " All Filed are required", Toast.LENGTH_SHORT).show();
+
                 }else if (str_password.length()<6){
                     Toast.makeText(SignUpNew.this, " Min password length should be 6 characters!", Toast.LENGTH_SHORT).show();
+
                 }else{
+
                     signUp(str_email, str_password, str_username, str_fullname);
                 }
             }
         });
+    }
+
+    public boolean hasLength(CharSequence value) {
+        return String.valueOf(value).length() >=6;
+    }
+
+    public boolean hasNumber(CharSequence value) {
+        return String.valueOf(value).matches("(.*[0-9].*)");
+    }
+
+    public boolean hasUpper(CharSequence value) {
+        String s = String.valueOf(value);
+        return  !s.equals(s.toLowerCase());
     }
 
     private void signUp(String email, String password, String username, String fullname){

@@ -38,6 +38,7 @@ import com.google.firebase.storage.StorageReference;
 import com.pk.portkopi.CommentsActivity;
 import com.pk.portkopi.FollowersActivity;
 import com.pk.portkopi.Fragment.PostDetailFragment;
+import com.pk.portkopi.Fragment.ProfileFragment;
 import com.pk.portkopi.Model.Post;
 import com.pk.portkopi.Model.User;
 import com.pk.portkopi.R;
@@ -82,7 +83,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ImageViewHolde
         }
 
         //add profile picture here
-        publisherInfo(holder.username, holder.publisher, post.getId());
+        publisherInfo(holder.image_profile, holder.username, holder.publisher, post.getId());
         isLiked(post.getPostid(), holder.like);
         nrLikes(holder.likes, post.getPostid());
         getCommetns(post.getPostid(), holder.comments);
@@ -131,6 +132,30 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ImageViewHolde
             }
         });
 
+        holder.image_profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SharedPreferences.Editor editor = mContext.getSharedPreferences("PREFS", MODE_PRIVATE).edit();
+                editor.putString("profileid", post.getId());
+                editor.apply();
+
+                ((FragmentActivity)mContext).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new ProfileFragment()).commit();
+            }
+        });
+
+        holder.username.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SharedPreferences.Editor editor = mContext.getSharedPreferences("PREFS", MODE_PRIVATE).edit();
+                editor.putString("profileid", post.getId());
+                editor.apply();
+
+                ((FragmentActivity)mContext).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new ProfileFragment()).commit();
+            }
+        });
+
         holder.post_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -140,6 +165,18 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ImageViewHolde
 
                 ((FragmentActivity)mContext).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new PostDetailFragment()).commit();
+            }
+        });
+
+        holder.publisher.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SharedPreferences.Editor editor = mContext.getSharedPreferences("PREFS", MODE_PRIVATE).edit();
+                editor.putString("profileid", post.getId());
+                editor.apply();
+
+                ((FragmentActivity)mContext).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new ProfileFragment()).commit();
             }
         });
 
@@ -216,7 +253,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ImageViewHolde
     }
 
     //Username
-    private void publisherInfo(final TextView username, final TextView publisher, final String userid){
+    private void publisherInfo(final ImageView image_profile, final TextView username, final TextView publisher, final String userid){
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference()
                 .child("Users").child(userid);
 
@@ -224,7 +261,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ImageViewHolde
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 User user = dataSnapshot.getValue(User.class);
-//                Glide.with(mContext).load(user.getImageurl()).into(image_profile);
+                Glide.with(mContext).load(user.getImageurl()).into(image_profile);
                 username.setText(user.getUsername());
                 publisher.setText(user.getUsername());
             }
