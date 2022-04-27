@@ -23,7 +23,7 @@ import com.google.firebase.database.ValueEventListener;
 
 public class LoginNew extends AppCompatActivity {
     private EditText emailLogin, passwordLogin;
-    private TextView createAcc;
+    private TextView createAcc, btn_forgotpw;
     private Button login;
 
     private FirebaseAuth mAuth;
@@ -37,9 +37,17 @@ public class LoginNew extends AppCompatActivity {
         passwordLogin= (EditText) findViewById(R.id.password);
         createAcc= (TextView) findViewById(R.id.btn_signup);
         login= (Button) findViewById(R.id.btn_login);
+        btn_forgotpw = (TextView) findViewById(R.id.btn_forgotpw);
 
         //Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
+
+        btn_forgotpw.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(LoginNew.this, ForgotPassword.class));
+            }
+        });
 
         createAcc.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,6 +90,7 @@ public class LoginNew extends AppCompatActivity {
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                                     Intent intent = new Intent(LoginNew.this,NavMainActivity.class);
                                     startActivity(intent);
+                                    Toast.makeText(LoginNew.this, "Login Successfully", Toast.LENGTH_SHORT).show();
                                     finish();
                                 }
 

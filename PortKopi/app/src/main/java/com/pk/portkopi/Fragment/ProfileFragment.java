@@ -89,9 +89,11 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 String link = location.getText().toString();
-
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(link));
-                startActivity(intent);
+                Uri gmmIntentUri =
+                        Uri.parse("geo:0,0?q=" + Uri.encode(""+link));
+                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                mapIntent.setPackage("com.google.android.apps.maps");
+                startActivity(mapIntent);
             }
         });
 

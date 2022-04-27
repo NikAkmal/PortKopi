@@ -17,10 +17,16 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.widget.Autocomplete;
+import com.google.android.libraries.places.widget.AutocompleteActivity;
+import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -35,7 +41,9 @@ import com.pk.portkopi.Model.User;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 public class EditProfileActivity extends AppCompatActivity {
     ImageView close, image_pro;
@@ -63,6 +71,23 @@ public class EditProfileActivity extends AppCompatActivity {
         username=findViewById(R.id.usernameE);
         bio=findViewById(R.id.bioe);
         location=findViewById(R.id.locationE);
+
+        //initialize place
+        Places.initialize(getApplicationContext(),"AIzaSyD9hKwu_QOkIzmK6pkzq181OE0rgAB-Av4");
+        location.setFocusable(false);
+        location.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //initialize place field list
+                List<Place.Field>  fieldList = Arrays.asList(Place.Field.ADDRESS
+                        ,Place.Field.LAT_LNG, Place.Field.NAME);
+                //create intent
+                Intent intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY
+                        ,fieldList).build(EditProfileActivity.this);
+                //start activity result
+                startActivityForResult(intent, 100);
+            }
+        });
 
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         storageRef = FirebaseStorage.getInstance().getReference("uploads");
@@ -122,6 +147,7 @@ public class EditProfileActivity extends AppCompatActivity {
             }
         });
     }
+
 
     private void updateProfile(String fullname, String username, String bio, String location){
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.getUid());
@@ -190,7 +216,6 @@ public class EditProfileActivity extends AppCompatActivity {
         }
     }
 
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -199,9 +224,22 @@ public class EditProfileActivity extends AppCompatActivity {
             mImageUrl = result.getUri();
             uploadImage();
 
-        } else {
+        }
+        else if (requestCode == 100 && resultCode == RESULT_OK){
+            //when success
+            //Initialize place
+            Place place = Autocomplete.getPlaceFromIntent(data);
+            //set address on location
+            location.setText(place.getAddress());
+        }
+        else if (resultCode == AutocompleteActivity.RESULT_ERROR){
+            Status status = Autocomplete.getStatusFromIntent(data);
+            Toast.makeText(this, status.getStatusMessage(), Toast.LENGTH_SHORT).show();
+        }
+        else {
             Toast.makeText(this, "Something Gone Wrong", Toast.LENGTH_SHORT).show();
         }
+
     }
 }
 

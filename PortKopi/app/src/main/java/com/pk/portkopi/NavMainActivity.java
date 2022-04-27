@@ -14,6 +14,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.pk.portkopi.Fragment.HomeFragment;
 import com.pk.portkopi.Fragment.ProfileFragment;
@@ -24,14 +25,14 @@ public class NavMainActivity extends AppCompatActivity {
     BottomNavigationView bottomNavigationView;
     Fragment selectedFragment = null;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nav_main);
 
         bottomNavigationView = findViewById(R.id.bottom_navigation);
-
-        bottomNavigationView.setOnNavigationItemReselectedListener(navigationItemSelectedListener);
+        bottomNavigationView.setOnItemSelectedListener(navigationItemSelectedListener2);
 
         //Runtime permissions
         if (ContextCompat.checkSelfPermission(NavMainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)
@@ -61,11 +62,10 @@ public class NavMainActivity extends AppCompatActivity {
 
 
     }
-
-    private BottomNavigationView.OnNavigationItemReselectedListener navigationItemSelectedListener =
-            new BottomNavigationView.OnNavigationItemReselectedListener() {
+    private NavigationBarView.OnItemSelectedListener navigationItemSelectedListener2 =
+            new NavigationBarView.OnItemSelectedListener(){
                 @Override
-                public void onNavigationItemReselected(@NonNull MenuItem item) {
+                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                     switch (item.getItemId()){
                         case R.id.nav_home:
                             selectedFragment = new HomeFragment();
@@ -88,6 +88,7 @@ public class NavMainActivity extends AppCompatActivity {
                     if (selectedFragment !=null){
                         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
                     }
+                    return true;
                 }
             };
 }

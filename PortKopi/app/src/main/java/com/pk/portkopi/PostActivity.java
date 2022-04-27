@@ -63,6 +63,7 @@ public class PostActivity extends AppCompatActivity {
 
         storageRef = FirebaseStorage.getInstance().getReference("posts");
 
+        //Close button
         close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -71,6 +72,7 @@ public class PostActivity extends AppCompatActivity {
             }
         });
 
+        //Post button
         post.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -78,7 +80,7 @@ public class PostActivity extends AppCompatActivity {
             }
         });
 
-
+        //Start
         CropImage.activity()
                 .setAspectRatio(1,1)
                 .start(PostActivity.this);
@@ -90,6 +92,7 @@ public class PostActivity extends AppCompatActivity {
         return mime.getExtensionFromMimeType(cR.getType(uri));
     }
 
+    //Upload
     private void uploadImage_10(){
         final ProgressDialog pd = new ProgressDialog(this);
         pd.setMessage("Posting");
@@ -158,7 +161,8 @@ public class PostActivity extends AppCompatActivity {
             mImageUri = result.getUri();
 
             image_added.setImageURI(mImageUri);
-        } else {
+        }
+        else {
             Toast.makeText(this, "Something gone wrong!", Toast.LENGTH_SHORT).show();
             startActivity(new Intent(PostActivity.this, NavMainActivity.class));
             finish();

@@ -140,6 +140,10 @@ public class SignUpNew extends AppCompatActivity {
         });
     }
 
+    public void ClickReturn(View view) {
+        startActivity(new Intent(SignUpNew.this, LoginNew.class));
+    }
+
     public boolean hasLength(CharSequence value) {
         return String.valueOf(value).length() >=6;
     }
@@ -172,15 +176,16 @@ public class SignUpNew extends AppCompatActivity {
                             hashMap.put("email", email);
                             hashMap.put("imageurl","https://firebasestorage.googleapis.com/v0/b/portkopi-fbd40.appspot.com/o/default-profile-icon-24.jpg?alt=media&token=256a3215-a12b-4095-8250-dfceaeaa4ff9");
 
-//                            Toast.makeText(SignUp.this, "Registration success", Toast.LENGTH_SHORT).show();
+
                             reference.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     pd.dismiss();
                                     if (task.isSuccessful()){
-                                        Intent intent = new Intent(SignUpNew.this, LoginNew.class);
+                                        Intent intent = new Intent(SignUpNew.this, NavMainActivity.class);
                                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                                         startActivity(intent);
+                                        Toast.makeText(SignUpNew.this, "Registration success", Toast.LENGTH_SHORT).show();
                                     }
                                 }
                             });

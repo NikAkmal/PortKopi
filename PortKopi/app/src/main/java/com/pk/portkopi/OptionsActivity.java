@@ -37,10 +37,16 @@ public class OptionsActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 FirebaseAuth.getInstance().signOut();
-                startActivity(new Intent(OptionsActivity.this, LoginNew.class)
-                        .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK));
+                Intent i = new Intent(OptionsActivity.this,LoginNew.class);
+                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(i);
+
+//                startActivity(new Intent(OptionsActivity.this, LoginNew.class)
+//                        .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
             }
         });
 
     }
 }
+
