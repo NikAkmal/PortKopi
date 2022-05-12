@@ -5,12 +5,22 @@ public class Post {
     private String image;
     private String description;
     private String id;
+    private String location;
 
-    public Post(String postid, String image, String description, String id) {
+    public Post(String postid, String image, String description, String id, String location) {
         this.postid = postid;
         this.image = image;
         this.description = description;
         this.id = id;
+        this.location = location;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
     }
 
     public Post() {

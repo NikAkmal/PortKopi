@@ -30,19 +30,10 @@
 
             <ImageView
                 android:id="@+id/logoImage"
-                android:layout_width="200dp"
-                android:layout_height="200dp"
-                app:srcCompat="@drawable/ic_coffee_cup"/>
+                android:layout_width="300dp"
+                android:layout_height="match_parent"
+                app:srcCompat="@drawable/splashlogo"/>
 
-            <TextView
-                android:id="@+id/logoName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/headland_one"
-                android:text="Port Kopi"
-                android:textColor="#ffffff"
-                android:textSize="40sp"
-                android:layout_gravity="center"/>
 
         </LinearLayout>
 

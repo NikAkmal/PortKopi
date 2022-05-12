@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -95,6 +96,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ImageViewHolde
                 if (holder.like.getTag().equals("like")) {
                     FirebaseDatabase.getInstance().getReference().child("Likes").child(post.getPostid())
                             .child(firebaseUser.getUid()).setValue(true);
+                    addNotification(post.getId(), post.getPostid());
                 } else {
                     FirebaseDatabase.getInstance().getReference().child("Likes").child(post.getPostid())
                             .child(firebaseUser.getUid()).removeValue();
@@ -117,7 +119,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ImageViewHolde
             public void onClick(View view) {
                 Intent intent = new Intent(mContext, CommentsActivity.class);
                 intent.putExtra("postid", post.getPostid());
-                intent.putExtra("publisherid", post.getId());
+                intent.putExtra("id", post.getId());
                 mContext.startActivity(intent);
             }
         });
@@ -203,7 +205,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ImageViewHolde
                                                     StorageReference photoDelete = FirebaseStorage.getInstance().getReferenceFromUrl(post.getImage());
                                                     photoDelete.delete();
                                                     Toast.makeText(mContext, "Deleted!", Toast.LENGTH_SHORT).show();
-
+                                                    deleteNotifications(id, firebaseUser.getUid());
                                                 }
                                             }
                                         });
@@ -224,6 +226,29 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ImageViewHolde
                 popupMenu.show();
             }
         });
+
+        //click location
+        holder.locationT.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String link = post.getLocation();
+                String url = "https://waze.com/ul?q=" + Uri.encode(""+link);
+                Intent intentWaze = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                intentWaze.setPackage("com.waze");
+
+                String uriGoogle = "geo:0,0?q=" + Uri.encode(""+link);
+                Intent intentGoogleNav = new Intent(Intent.ACTION_VIEW, Uri.parse(uriGoogle));
+                intentGoogleNav.setPackage("com.google.android.apps.maps");
+
+
+                String title = mContext.getString(R.string.title);
+                Intent chooserIntent = Intent.createChooser(intentGoogleNav, title);
+                Intent[] arr = new Intent[1];
+                arr[0] = intentWaze;
+                chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, arr);
+                mContext.startActivity(chooserIntent);
+            }
+        });
     }
 
     @Override
@@ -233,7 +258,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ImageViewHolde
 
     public class ImageViewHolder extends RecyclerView.ViewHolder {
 
-        public ImageView image_profile, post_image, like, comment, more;
+        public ImageView image_profile, post_image, like, comment, more, locationT;
         public TextView username, likes, publisher, description, comments;
 
         public ImageViewHolder(View itemView) {
@@ -249,7 +274,45 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ImageViewHolde
             description = itemView.findViewById(R.id.description);
             comments = itemView.findViewById(R.id.comments);
             more = itemView.findViewById(R.id.more);
+            locationT = itemView.findViewById(R.id.location_item);
         }
+    }
+
+    private void addNotification(String userid, String postid){
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Notifications").child(userid);
+
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("userid", firebaseUser.getUid());
+        hashMap.put("text", "liked your post");
+        hashMap.put("postid", postid);
+        hashMap.put("ispost", true);
+
+        reference.push().setValue(hashMap);
+    }
+
+    private void deleteNotifications(final String postid, String userid){
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Notifications").child(userid);
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    if (snapshot.child("postid").getValue().equals(postid)){
+                        snapshot.getRef().removeValue()
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        Toast.makeText(mContext, "Deleted!", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     //Username

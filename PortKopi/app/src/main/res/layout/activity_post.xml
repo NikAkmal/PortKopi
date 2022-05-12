@@ -70,6 +70,27 @@
             android:id="@+id/description"
             android:maxLines="5"/>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/locationim"
+            android:layout_width="30dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="15dp"
+            android:src="@drawable/ic_add_location" />
+        <EditText
+            android:id="@+id/setlocation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_toEndOf="@id/locationim"
+            android:hint="Add Location"
+            android:inputType="text"
+            android:autoLink="web"
+            android:clickable="true"
+            android:maxLines="5" />
+    </LinearLayout>
     </LinearLayout>
 
 </LinearLayout>

@@ -15,10 +15,16 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.widget.Autocomplete;
+import com.google.android.libraries.places.widget.AutocompleteActivity;
+import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -29,8 +35,10 @@ import com.google.firebase.storage.UploadTask;
 import com.theartofdev.edmodo.cropper.CropImage;
 
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 
 public class PostActivity extends AppCompatActivity {
 
@@ -40,7 +48,7 @@ public class PostActivity extends AppCompatActivity {
     StorageReference storageRef;
 
     ImageView close, image_added;
-    TextView post;
+    TextView post, addLocation;
     EditText description;
 
     Calendar calendar;
@@ -60,8 +68,26 @@ public class PostActivity extends AppCompatActivity {
         image_added = findViewById(R.id.image_added);
         post = findViewById(R.id.post);
         description = findViewById(R.id.description);
+        addLocation = findViewById(R.id.setlocation);
 
         storageRef = FirebaseStorage.getInstance().getReference("posts");
+
+        //initialize place
+        Places.initialize(getApplicationContext(),"AIzaSyD9hKwu_QOkIzmK6pkzq181OE0rgAB-Av4");
+        addLocation.setFocusable(false);
+        addLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //initialize place field list
+                List<Place.Field> fieldList = Arrays.asList(Place.Field.ADDRESS
+                        ,Place.Field.LAT_LNG, Place.Field.NAME);
+                //create intent
+                Intent intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY
+                        ,fieldList).build(PostActivity.this);
+                //start activity result
+                startActivityForResult(intent, 110);
+            }
+        });
 
         //Close button
         close.setOnClickListener(new View.OnClickListener() {
@@ -126,6 +152,7 @@ public class PostActivity extends AppCompatActivity {
                         hashMap.put("datetime", datetime);
                         hashMap.put("image", miUrlOk);
                         hashMap.put("description", description.getText().toString());
+                        hashMap.put("location", addLocation.getText().toString());
                         hashMap.put("id", FirebaseAuth.getInstance().getCurrentUser().getUid());
 
                         reference.child(postid).setValue(hashMap);
@@ -161,6 +188,17 @@ public class PostActivity extends AppCompatActivity {
             mImageUri = result.getUri();
 
             image_added.setImageURI(mImageUri);
+        }
+        else if (requestCode == 110 && resultCode == RESULT_OK){
+            //when success
+            //Initialize place
+            Place place = Autocomplete.getPlaceFromIntent(data);
+            //set address on location
+            addLocation.setText(place.getAddress());
+        }
+        else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
+            Status status = Autocomplete.getStatusFromIntent(data);
+            Toast.makeText(this, status.getStatusMessage(), Toast.LENGTH_SHORT).show();
         }
         else {
             Toast.makeText(this, "Something gone wrong!", Toast.LENGTH_SHORT).show();
