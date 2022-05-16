@@ -23,49 +23,77 @@
         android:layout_marginRight="10dp"
         android:layout_marginLeft="10dp">
 
-        <EditText
-            android:id="@+id/fullname_up"
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
-            android:hint="Fullname"
-            android:inputType="textPersonName"
-            android:padding="10dp"
-            android:background="@drawable/input_field"/>
+            app:endIconMode="clear_text"
+            android:hint="Full name"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
-        <EditText
-            android:id="@+id/username_up"
+            <EditText
+                android:id="@+id/fullname_up"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:padding="15dp"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
+            app:endIconMode="clear_text"
+            android:layout_marginTop="5dp"
             android:hint="Username"
-            android:inputType="textPersonName"
-            android:padding="10dp"
-            android:background="@drawable/input_field"/>
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
-        <EditText
-            android:id="@+id/email_up"
+            <EditText
+                android:id="@+id/username_up"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:padding="15dp"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
+            app:endIconMode="clear_text"
+            android:layout_marginTop="5dp"
             android:hint="Email"
-            android:inputType="textEmailAddress"
-            android:padding="10dp"
-            android:background="@drawable/input_field"/>
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
-        <EditText
-            android:id="@+id/password_up"
+            <EditText
+                android:id="@+id/email_up"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress"
+                android:padding="15dp"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
             android:hint="Password"
-            android:inputType="textPassword"
-            android:padding="10dp"
-            android:background="@drawable/input_field"/>
+            android:layout_marginTop="5dp"
+            app:passwordToggleEnabled="true"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+            <EditText
+                android:id="@+id/password_up"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:padding="2dp"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
             android:text="Password should be: "/>
 
         <LinearLayout
@@ -150,6 +178,7 @@
             android:text="Already have account? Log In"
             android:layout_gravity="center"
             android:textSize="17sp"
+            android:textColor="@color/colorPrimary"
             android:padding="15dp"/>
 
 

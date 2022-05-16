@@ -24,30 +24,45 @@
         android:orientation="vertical"
         android:layout_margin="30dp">
 
-        <EditText
-            android:id="@+id/email"
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Email"
-            android:inputType="textEmailAddress"
-            android:padding="10dp"
-            android:background="@drawable/input_field"/>
+            app:endIconMode="clear_text"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
-        <EditText
-            android:id="@+id/password"
+            <EditText
+                android:id="@+id/Email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Email"
+                android:inputType="textEmailAddress"
+                android:padding="15dp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
-            android:hint="Password"
-            android:inputType="textPassword"
-            android:padding="10dp"
-            android:background="@drawable/input_field"/>
+            app:passwordToggleEnabled="true"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+            <EditText
+                android:id="@+id/password"
+                android:hint="Password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:padding="2dp"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
             android:id="@+id/btn_forgotpw"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Forgot password?"
+            android:textColor="@color/colorPrimary"
             android:layout_gravity="center"
             android:textSize="17sp"
             android:padding="15dp"/>
@@ -66,6 +81,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Create an account?"
+            android:textColor="@color/colorPrimary"
             android:layout_gravity="center"
             android:textSize="17sp"
             android:padding="15dp"/>

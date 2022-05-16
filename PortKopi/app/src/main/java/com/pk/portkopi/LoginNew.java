@@ -15,6 +15,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -29,11 +30,23 @@ public class LoginNew extends AppCompatActivity {
     private FirebaseAuth mAuth;
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        FirebaseUser user = mAuth.getCurrentUser();
+        if (user != null){
+            Intent intent = new Intent(LoginNew.this,NavMainActivity.class);
+            startActivity(intent);
+            Toast.makeText(LoginNew.this, "Welcome Back", Toast.LENGTH_SHORT).show();
+            finish();
+        }
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_new);
 
-        emailLogin= (EditText) findViewById(R.id.email);
+        emailLogin= (EditText) findViewById(R.id.Email);
         passwordLogin= (EditText) findViewById(R.id.password);
         createAcc= (TextView) findViewById(R.id.btn_signup);
         login= (Button) findViewById(R.id.btn_login);
@@ -88,6 +101,7 @@ public class LoginNew extends AppCompatActivity {
                             reference.addValueEventListener(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
+
                                     Intent intent = new Intent(LoginNew.this,NavMainActivity.class);
                                     startActivity(intent);
                                     Toast.makeText(LoginNew.this, "Login Successfully", Toast.LENGTH_SHORT).show();
@@ -106,5 +120,6 @@ public class LoginNew extends AppCompatActivity {
                 });
             }
         });
+
     }
 }

@@ -3,9 +3,13 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Tree Integrated Solution (TIS)/Mobile Application/PortKopi/PortKopi/app/src/main/res/drawable-anydpi/ic_heart.xml" value="0.196" />
+        <entry key="..\:/Tree Integrated Solution (TIS)/Mobile Application/PortKopi/PortKopi/app/src/main/res/drawable-anydpi/ic_liked.xml" value="0.196" />
+        <entry key="..\:/Tree Integrated Solution (TIS)/Mobile Application/PortKopi/PortKopi/app/src/main/res/drawable/icon.xml" value="0.196" />
         <entry key="..\:/Tree Integrated Solution (TIS)/Mobile Application/PortKopi/PortKopi/app/src/main/res/layout/action_bar.xml" value="0.15780141843971632" />
         <entry key="..\:/Tree Integrated Solution (TIS)/Mobile Application/PortKopi/PortKopi/app/src/main/res/layout/action_bar_2.xml" value="0.2807971014492754" />
         <entry key="..\:/Tree Integrated Solution (TIS)/Mobile Application/PortKopi/PortKopi/app/src/main/res/layout/activity_comments.xml" value="0.27447916666666666" />
+        <entry key="..\:/Tree Integrated Solution (TIS)/Mobile Application/PortKopi/PortKopi/app/src/main/res/layout/activity_edit_profile.xml" value="0.22552083333333334" />
         <entry key="..\:/Tree Integrated Solution (TIS)/Mobile Application/PortKopi/PortKopi/app/src/main/res/layout/activity_followers.xml" value="0.16917293233082706" />
         <entry key="..\:/Tree Integrated Solution (TIS)/Mobile Application/PortKopi/PortKopi/app/src/main/res/layout/activity_home_page.xml" value="0.11820652173913043" />
         <entry key="..\:/Tree Integrated Solution (TIS)/Mobile Application/PortKopi/PortKopi/app/src/main/res/layout/activity_login.xml" value="0.2" />

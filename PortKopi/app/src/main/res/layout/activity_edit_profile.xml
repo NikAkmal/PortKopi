@@ -80,36 +80,126 @@
             android:textColor="@color/colorPrimary"
             android:textSize="16sp"/>
 
-        <EditText
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:hint="Full Name"
-            android:inputType="text"
-            android:id="@+id/fullnameE" />
+            android:orientation="horizontal">
 
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Username"
-            android:inputType="text"
-            android:id="@+id/usernameE"/>
+            <TextView
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:textColor="@color/colorPrimary"
+                android:text="Name"/>
 
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Bio"
-            android:inputType="text"
-            android:id="@+id/bioe"/>
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:endIconMode="clear_text"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
-        <EditText
+                <EditText
+                    android:id="@+id/fullnameE"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPersonName"
+                    android:padding="15dp"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Location"
-            android:inputType="text"
-            android:autoLink="web"
-            android:clickable="true"
-            android:id="@+id/locationE"/>
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:textColor="@color/colorPrimary"
+                android:text="Username"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:endIconMode="clear_text"
+                android:layout_marginTop="5dp"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                <EditText
+                    android:id="@+id/usernameE"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPersonName"
+                    android:padding="15dp"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:textColor="@color/colorPrimary"
+                android:text="Bio"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:endIconMode="clear_text"
+                android:layout_marginTop="5dp"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                <EditText
+                    android:id="@+id/bioe"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="15dp"
+                    android:inputType="text"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:textColor="@color/colorPrimary"
+                android:text="Location"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:endIconMode="clear_text"
+                android:layout_marginTop="5dp"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                <EditText
+                    android:id="@+id/locationE"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="15dp"
+                    android:inputType="text"
+                    android:autoLink="web"
+                    android:clickable="true"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </LinearLayout>
 
 
     </LinearLayout>

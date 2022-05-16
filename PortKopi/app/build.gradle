@@ -68,4 +68,13 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth'
     implementation 'com.google.firebase:firebase-firestore'
 
+    //FCM
+    // Import the BoM for the Firebase platform
+    implementation platform('com.google.firebase:firebase-bom:30.0.0')
+    // Declare the dependencies for the Firebase Cloud Messaging and Analytics libraries
+    // When using the BoM, you don't specify versions in Firebase library dependencies
+    implementation 'com.google.firebase:firebase-analytics'
+    implementation 'com.google.firebase:firebase-messaging:22.0.0'
+    implementation 'com.android.volley:volley:1.2.0'
+
 }
