@@ -81,6 +81,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ImageViewHolde
         } else {
             holder.description.setVisibility(View.VISIBLE);
             holder.description.setText(post.getDescription());
+            holder.place.setText(post.getPlace());
         }
 
         //add profile picture here
@@ -194,21 +195,38 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ImageViewHolde
                                 editPost(post.getPostid());
                                 return true;
                             case R.id.delete:
-                                final String id = post.getPostid();
-                                FirebaseDatabase.getInstance().getReference("Posts")
-                                        .child(post.getPostid()).removeValue()
-                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<Void> task) {
-                                                if (task.isSuccessful()){
+                                AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                                builder.setCancelable(true);
+                                builder.setTitle("Delete");
+                                builder.setMessage("Are you sure you want to delete this post?");
+                                builder.setPositiveButton("Confirm",
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        final String id = post.getPostid();
+                                        FirebaseDatabase.getInstance().getReference("Posts")
+                                                .child(post.getPostid()).removeValue()
+                                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                        if (task.isSuccessful()){
 //                                                    Delete Image in Storage Code
-                                                    StorageReference photoDelete = FirebaseStorage.getInstance().getReferenceFromUrl(post.getImage());
-                                                    photoDelete.delete();
-                                                    Toast.makeText(mContext, "Deleted!", Toast.LENGTH_SHORT).show();
-                                                    deleteNotifications(id, firebaseUser.getUid());
-                                                }
-                                            }
-                                        });
+                                                            StorageReference photoDelete = FirebaseStorage.getInstance().getReferenceFromUrl(post.getImage());
+                                                            photoDelete.delete();
+                                                            Toast.makeText(mContext, "Deleted!", Toast.LENGTH_SHORT).show();
+                                                            deleteNotifications(id, firebaseUser.getUid());
+                                                        }
+                                                    }
+                                                });
+                                    }
+                                });
+                                builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                    }
+                                });
+                                AlertDialog dialog = builder.create();
+                                dialog.show();
                                 return true;
                             case R.id.report:
                                 Toast.makeText(mContext, "Reported clicked!", Toast.LENGTH_SHORT).show();
@@ -249,6 +267,29 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ImageViewHolde
                 mContext.startActivity(chooserIntent);
             }
         });
+
+        //click location by place
+        holder.place.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String link = post.getLocation();
+                String url = "https://waze.com/ul?q=" + Uri.encode(""+link);
+                Intent intentWaze = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                intentWaze.setPackage("com.waze");
+
+                String uriGoogle = "geo:0,0?q=" + Uri.encode(""+link);
+                Intent intentGoogleNav = new Intent(Intent.ACTION_VIEW, Uri.parse(uriGoogle));
+                intentGoogleNav.setPackage("com.google.android.apps.maps");
+
+
+                String title = mContext.getString(R.string.title);
+                Intent chooserIntent = Intent.createChooser(intentGoogleNav, title);
+                Intent[] arr = new Intent[1];
+                arr[0] = intentWaze;
+                chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, arr);
+                mContext.startActivity(chooserIntent);
+            }
+        });
     }
 
     @Override
@@ -259,7 +300,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ImageViewHolde
     public class ImageViewHolder extends RecyclerView.ViewHolder {
 
         public ImageView image_profile, post_image, like, comment, more, locationT;
-        public TextView username, likes, publisher, description, comments;
+        public TextView username, likes, publisher, description, comments, place;
 
         public ImageViewHolder(View itemView) {
             super(itemView);
@@ -275,6 +316,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ImageViewHolde
             comments = itemView.findViewById(R.id.comments);
             more = itemView.findViewById(R.id.more);
             locationT = itemView.findViewById(R.id.location_item);
+            place = itemView.findViewById(R.id.placeName);
         }
     }
 
@@ -284,6 +326,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ImageViewHolde
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("userid", firebaseUser.getUid());
         hashMap.put("text", "liked your post");
+        hashMap.put("type", "liked");
         hashMap.put("postid", postid);
         hashMap.put("ispost", true);
 

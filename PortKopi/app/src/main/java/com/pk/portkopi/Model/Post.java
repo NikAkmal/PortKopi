@@ -6,13 +6,23 @@ public class Post {
     private String description;
     private String id;
     private String location;
+    private String place;
 
-    public Post(String postid, String image, String description, String id, String location) {
+    public Post(String postid, String image, String description, String id, String location, String place) {
         this.postid = postid;
         this.image = image;
         this.description = description;
         this.id = id;
         this.location = location;
+        this.place = place;
+    }
+
+    public String getPlace() {
+        return place;
+    }
+
+    public void setPlace(String place) {
+        this.place = place;
     }
 
     public String getLocation() {
@@ -57,4 +67,5 @@ public class Post {
     public void setPublisher(String id) {
         this.id = id;
     }
+
 }

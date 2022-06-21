@@ -3,14 +3,17 @@ package com.pk.portkopi.Model;
 public class Notification {
     private String userid;
     private String text;
+    private String type;
     private String postid;
     private boolean ispost;
 
-    public Notification(String userid, String text, String postid, boolean ispost) {
+    public Notification(String userid, String text, String type, String postid, boolean ispost) {
         this.userid = userid;
         this.text = text;
+        this.type = type;
         this.postid = postid;
         this.ispost = ispost;
+
     }
 
     public Notification() {
@@ -38,6 +41,12 @@ public class Notification {
 
     public void setPostid(String postid) {
         this.postid = postid;
+    }
+
+    public  String getType() {return type;}
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public boolean isIspost() {

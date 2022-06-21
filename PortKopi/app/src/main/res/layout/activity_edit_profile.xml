@@ -42,17 +42,6 @@
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/save"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="10dp"
-                    android:text="SAVE"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="16sp" />
             </RelativeLayout>
         </Toolbar>
     </com.google.android.material.appbar.AppBarLayout>
@@ -200,6 +189,16 @@
             </com.google.android.material.textfield.TextInputLayout>
 
         </LinearLayout>
+
+        <Button
+            android:id="@+id/save"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:textColor="@color/white"
+            android:background="@drawable/button"
+            android:layout_gravity="center"
+            android:text="Save"/>
 
 
     </LinearLayout>

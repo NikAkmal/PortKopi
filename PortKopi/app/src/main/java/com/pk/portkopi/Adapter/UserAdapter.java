@@ -137,8 +137,10 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ImageViewHolde
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Notifications").child(userid);
 
         HashMap<String, Object> hashMap = new HashMap<>();
+
         hashMap.put("userid", firebaseUser.getUid());
         hashMap.put("text", "started following you");
+        hashMap.put("type", "following");
         hashMap.put("postid", "");
         hashMap.put("ispost", false);
 
